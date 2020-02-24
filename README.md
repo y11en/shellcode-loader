@@ -15,7 +15,9 @@ https://www.virustotal.com/gui/file/08d02c54c910ad9d26d4f42aa59f785aad9468c3687b
 
 # 使用方法
 
-**注意不同位数的payload请使用相应的loader.**
+cobalt strike 或者 metasploit 生成 csharp 的 payload ,先使用 enloader 加密,再使用 loader.exe 执行.
+
+**注意不同位数的 payload 请使用相应的 loader .**
 
 1. enloader.exe 生成加密payload
 2. cmd /c loader.exe payload
